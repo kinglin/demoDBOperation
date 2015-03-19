@@ -39,5 +39,26 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println("age:", result.Age)
+	//查询相应条件所有数据并显示
+	people := []Person{}
+	err = collection.Find(bson.M{"name": "bbb"}).All(&people)
+	if err != nil {
+		log.Fatal(err)
+	}
+	for name, age := range people {
+		fmt.Println(name, age)
+	}
+
+	//更新数据
+	err = collection.Update(bson.M{"name": "aaa"}, bson.M{"$set": bson.M{"age": "3"}})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	//删除数据
+	_, err = collection.RemoveAll(bson.M{"age": "3"})
+	if err != nil {
+		log.Fatal(err)
+	}
+
 }
